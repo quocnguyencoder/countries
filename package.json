@@ -6,7 +6,21 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "type-check": "tsc --pretty --noEmit",
+    "format": "prettier --write .",
+    "lint": "eslint . --ext ts --ext tsx --ext js"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "yarn run type-check"
+    }
+  },
+  "lint-staged": {
+    "*.@(ts|tsx)": [
+      "yarn lint",
+      "yarn format"
+    ]
   },
   "dependencies": {
     "next": "12.1.0",
@@ -16,8 +30,13 @@
   "devDependencies": {
     "@types/node": "17.0.19",
     "@types/react": "17.0.39",
+    "@typescript-eslint/eslint-plugin": "^5.12.1",
     "eslint": "8.9.0",
     "eslint-config-next": "12.1.0",
+    "eslint-config-prettier": "^8.4.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.3.4",
+    "prettier": "^2.5.1",
     "typescript": "4.5.5"
   }
 }
