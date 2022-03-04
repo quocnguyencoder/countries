@@ -1,3 +1,4 @@
+import Logo from '@/components/Logo'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
@@ -19,14 +20,15 @@ const Home: NextPage = () => {
           alignItems: 'center',
         }}
       >
-        <Typography variant="h4" component="h1" gutterBottom>
+        {/* <Typography variant="h4" component="h1" gutterBottom>
           MUI v5 + Next.js with TypeScript example
         </Typography>
         <Link href="/about" color="secondary">
           Go to the about page
         </Link>
         <ProTip />
-        <Copyright />
+        <Copyright /> */}
+        <Logo />
       </Box>
     </Container>
   )
