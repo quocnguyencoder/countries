@@ -1,4 +1,5 @@
 import { CacheProvider, EmotionCache } from '@emotion/react'
+import { Box } from '@mui/material'
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
 import { AppProps } from 'next/app'
@@ -23,7 +24,16 @@ export default function MyApp(props: MyAppProps) {
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <Component {...pageProps} />
+        <Box
+          height="100vh"
+          width="100vw"
+          sx={{
+            background: 'url("./background 4284x2923.jpeg") no-repeat center',
+            backgroundSize: 'cover',
+          }}
+        >
+          <Component {...pageProps} />
+        </Box>
       </ThemeProvider>
     </CacheProvider>
   )
