@@ -1,10 +1,14 @@
 import Container from '@mui/material/Container'
-import type { NextPage } from 'next'
 import Logo from '@/components/Logo'
-import SearchBar from '@/components/SearchBar'
+import SearchSection from '@/components/SearchSection'
+import Country from 'interfaces/country'
 import Copyright from '../src/Copyright'
 
-const Home: NextPage = () => {
+interface Props {
+  countries: Country[]
+}
+
+const Home = ({ countries }: Props) => {
   return (
     <Container
       maxWidth="lg"
@@ -16,10 +20,21 @@ const Home: NextPage = () => {
       }}
     >
       <Logo />
-      <SearchBar />
+      <SearchSection countries={countries} />
       <Copyright />
     </Container>
   )
+}
+
+export async function getStaticProps() {
+  const res = await fetch('https://restcountries.com/v3.1/all')
+  const countries = (await res.json()) as Country[]
+
+  return {
+    props: {
+      countries,
+    },
+  }
 }
 
 export default Home

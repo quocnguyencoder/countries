@@ -19,8 +19,11 @@
       "@/components/*": [
         "components/*"
       ],
-      "@/types/*": [
-        "types/*"
+      "@/interfaces/*": [
+        "interfaces/*"
+      ],
+      "@/helpers/*": [
+        "helpers/*"
       ]
     }
   },
