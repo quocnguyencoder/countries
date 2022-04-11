@@ -31,4 +31,15 @@ describe('<SearchSection />', () => {
       const { getByTestId } = setup()
       expect(() => getByTestId('clear-search-btn')).toThrow()
     })
+  //show results area when focus
+  //hide results area when loses focus
+  //result correction test
+  // - have results
+  // - no results
+  //results navigation tests:
+  //- not go to detail when no results
+  //- navigate then select result:
+  // -- normal move up and down
+  // -- move up reverse
+  // -- move down reverse
 })

@@ -19,7 +19,12 @@ const SearchBar = ({
   return (
     <InputBase
       placeholder="Search"
-      sx={{ width: '100%', borderRadius: '24px' }}
+      sx={{
+        width: '100%',
+        borderRadius: '24px',
+        fontSize: 'large',
+        margin: '0.3em',
+      }}
       value={searchTerm}
       onChange={(e) => setSearchTerm(e.target.value)}
       onKeyUp={(e) => handleResultsActions(e.key)}

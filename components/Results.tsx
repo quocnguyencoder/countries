@@ -15,8 +15,9 @@ interface Props {
 }
 
 const Results = ({ filteredCountries, selectedCountry, goToDetail }: Props) => {
+  // highlight matches
   return (
-    <List sx={{ overflow: 'auto', maxHeight: '40vh' }}>
+    <List sx={{ overflow: 'auto', maxHeight: '40vh', fontSize: 'large' }}>
       {filteredCountries.map((country, index) => (
         <ListItem
           button
@@ -28,7 +29,10 @@ const Results = ({ filteredCountries, selectedCountry, goToDetail }: Props) => {
           <ListItemAvatar>
             <Avatar src={country.flags.svg} />
           </ListItemAvatar>
-          <ListItemText primary={country.name.common} />
+          <ListItemText
+            sx={{ fontSize: 'large' }}
+            primary={country.name.common}
+          />
         </ListItem>
       ))}
     </List>

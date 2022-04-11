@@ -94,12 +94,10 @@ const SearchSection = ({ countries }: Props) => {
   return (
     <Box flex={1} width="95%">
       <Paper
-        variant="outlined"
         onFocus={() => setShowResults(true)}
         onBlur={() => setShowResults(false)}
         sx={{
           borderRadius: '24px',
-          padding: '0.4em',
           maxWidth: '600px',
           marginLeft: 'auto',
           marginRight: 'auto',
