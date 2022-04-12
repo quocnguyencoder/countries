@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Box,
   List,
   ListItem,
   ListItemAvatar,
@@ -15,27 +16,37 @@ interface Props {
 }
 
 const Results = ({ filteredCountries, selectedCountry, goToDetail }: Props) => {
+  const haveNoResults = filteredCountries.length === 0
   // highlight matches
+
   return (
-    <List sx={{ overflow: 'auto', maxHeight: '40vh', fontSize: 'large' }}>
-      {filteredCountries.map((country, index) => (
-        <ListItem
-          button
-          selected={index === selectedCountry}
-          onMouseDown={() => goToDetail(index)}
-          id={`country-${index}`}
-          key={`${index}${country.name.common}`}
+    <Box data-testid="results-section">
+      {!haveNoResults && (
+        <List
+          data-testid="results-list"
+          sx={{ overflow: 'auto', maxHeight: '40vh' }}
         >
-          <ListItemAvatar>
-            <Avatar src={country.flags.svg} />
-          </ListItemAvatar>
-          <ListItemText
-            sx={{ fontSize: 'large' }}
-            primary={country.name.common}
-          />
-        </ListItem>
-      ))}
-    </List>
+          {filteredCountries.map((country, index) => (
+            <ListItem
+              button
+              role="listitem"
+              selected={index === selectedCountry}
+              onMouseDown={() => goToDetail(index)}
+              id={`country-${index}`}
+              key={`${index}${country.name.common}`}
+            >
+              <ListItemAvatar>
+                <Avatar src={country.flags.svg} />
+              </ListItemAvatar>
+              <ListItemText
+                sx={{ fontSize: 'large' }}
+                primary={country.name.common}
+              />
+            </ListItem>
+          ))}
+        </List>
+      )}
+    </Box>
   )
 }
 

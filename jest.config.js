@@ -24,6 +24,7 @@ module.exports = {
     '^@/pages/(.*)$': '<rootDir>/pages/$1',
     '^@/interfaces/(.*)$': '<rootDir>/interfaces/$1',
     '^@/helpers/(.*)$': '<rootDir>/helpers/$1',
+    '^@/test-data/(.*)$': '<rootDir>/test-data/$1',
 
   },
   testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/.next/',"<rootDir>/e2e/",],

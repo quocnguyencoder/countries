@@ -43,7 +43,7 @@ const SearchBar = ({
             onClick={clearSearch}
             sx={{
               padding: 0,
-              marginRight: '0.4em',
+              marginRight: '0.8em',
             }}
           >
             <CloseOutlinedIcon fontSize="small" />

@@ -94,6 +94,7 @@ const SearchSection = ({ countries }: Props) => {
   return (
     <Box flex={1} width="95%">
       <Paper
+        data-testid="search-section"
         onFocus={() => setShowResults(true)}
         onBlur={() => setShowResults(false)}
         sx={{
