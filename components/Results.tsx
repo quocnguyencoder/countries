@@ -1,7 +1,7 @@
-import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied'
-import { Box, Typography } from '@mui/material'
+import { Box } from '@mui/material'
 import React from 'react'
 import Country from 'interfaces/country'
+import ResultNotice from './ResultNotice'
 import ResultsList from './ResultsList'
 interface Props {
   filteredCountries: Country[]
@@ -28,22 +28,10 @@ const Results = ({
           goToDetail={goToDetail}
         />
       ) : (
-        <Box
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-          alignItems="center"
-          height="20vh"
-          data-testid="results-notice"
-        >
-          <SentimentVeryDissatisfiedIcon
-            sx={{ fontSize: '4em', fontWeight: 'bold' }}
-          />
-          <Typography variant="caption">No results found</Typography>
-        </Box>
+        <ResultNotice />
       )}
     </Box>
   )
 }
 
-export default React.memo(Results)
+export default Results
