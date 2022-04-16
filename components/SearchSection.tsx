@@ -15,39 +15,38 @@ const SearchSection = ({ countries }: Props) => {
   const router = useRouter()
   const [searchTerm, setSearchTerm] = useState('')
   const [showResults, setShowResults] = useState(false)
-  const [selectedCountry, setSelectedCountry] = useState(-1)
+  const [selectedCountry, setSelectedCountry] = useState(0)
   const [filteredCountries, setFilteredCountries] =
     useState<Country[]>(countries)
 
   const goToDetail = (countryIndex: number) => {
-    const noResults = countryIndex === -1
-    if (!noResults) {
-      const countryName = toSpinalCase(
-        `${filteredCountries[countryIndex].name.common}`,
-      )
-      // store search term and selected country index into session
-      router.push(`/detail/${countryName}`)
-    }
+    const countryName = toSpinalCase(
+      `${filteredCountries[countryIndex].name.common}`,
+    )
+    // store search term and selected country index into session
+    router.push(`/detail/${countryName}`)
   }
 
   // handle navigation and selection by keyboard in results list
   const handleResultsActions = (key: string) => {
+    const hasResults = filteredCountries.length !== 0
+
     const isSelect = key === 'Enter'
     const isMoveUP = key === 'ArrowUp'
     const isMoveDown = key === 'ArrowDown'
 
-    const bottomResultsIndex = filteredCountries.length - 1
-    const isAtTopResult = selectedCountry === 0
-    const isAtBottomResult = selectedCountry === bottomResultsIndex
+    const lastResultsIndex = filteredCountries.length - 1
+    const isAtFirstResult = selectedCountry === 0
+    const isAtLastResult = selectedCountry === lastResultsIndex
 
-    // move select result to bottom if move up at top result
+    // move select result to last result if move up at first result
     const moveUp = () =>
-      isAtTopResult
-        ? setSelectedCountry(bottomResultsIndex)
+      isAtFirstResult
+        ? setSelectedCountry(lastResultsIndex)
         : setSelectedCountry(selectedCountry - 1)
-    // move select result to top if move down at bottom result
+    // move select result to first result if move down at last result
     const moveDown = () =>
-      isAtBottomResult
+      isAtLastResult
         ? setSelectedCountry(0)
         : setSelectedCountry(selectedCountry + 1)
 
@@ -55,7 +54,10 @@ const SearchSection = ({ countries }: Props) => {
       isMoveUP ? moveUp() : isMoveDown ? moveDown() : void 0
     }
 
-    isSelect ? goToDetail(selectedCountry) : changeSelectedCountry()
+    // only handle when result section is showed and has result(s)
+    showResults &&
+      hasResults &&
+      (isSelect ? goToDetail(selectedCountry) : changeSelectedCountry())
   }
 
   // filter countries when search term changes
@@ -68,15 +70,8 @@ const SearchSection = ({ countries }: Props) => {
     setFilteredCountries(searchResults)
   }, [searchTerm, countries])
 
-  // reset selected country to first element when results changes
-  // set selected index to -1 case no results
-  useEffect(
-    () =>
-      filteredCountries.length === 0
-        ? setSelectedCountry(-1)
-        : setSelectedCountry(0),
-    [filteredCountries],
-  )
+  // reset selected country to first result when results changes
+  useEffect(() => setSelectedCountry(0), [filteredCountries])
 
   // scroll to selected result if needed
   useEffect(() => {

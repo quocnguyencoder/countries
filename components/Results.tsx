@@ -1,3 +1,4 @@
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied'
 import {
   Avatar,
   Box,
@@ -5,6 +6,7 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
+  Typography,
 } from '@mui/material'
 import React from 'react'
 import Country from 'interfaces/country'
@@ -21,7 +23,7 @@ const Results = ({ filteredCountries, selectedCountry, goToDetail }: Props) => {
 
   return (
     <Box data-testid="results-section">
-      {!haveNoResults && (
+      {!haveNoResults ? (
         <List
           data-testid="results-list"
           sx={{ overflow: 'auto', maxHeight: '40vh' }}
@@ -29,7 +31,8 @@ const Results = ({ filteredCountries, selectedCountry, goToDetail }: Props) => {
           {filteredCountries.map((country, index) => (
             <ListItem
               button
-              role="listitem"
+              role="results-listitem"
+              data-testid={`results-listitem-${index}`}
               selected={index === selectedCountry}
               onMouseDown={() => goToDetail(index)}
               id={`country-${index}`}
@@ -45,6 +48,20 @@ const Results = ({ filteredCountries, selectedCountry, goToDetail }: Props) => {
             </ListItem>
           ))}
         </List>
+      ) : (
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+          height="20vh"
+          data-testid="results-notice"
+        >
+          <SentimentVeryDissatisfiedIcon
+            sx={{ fontSize: '4em', fontWeight: 'bold' }}
+          />
+          <Typography variant="caption">No results found</Typography>
+        </Box>
       )}
     </Box>
   )

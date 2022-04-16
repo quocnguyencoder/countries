@@ -11,8 +11,10 @@ jest.mock('next/router', () => ({
   useRouter: jest.fn(),
 }))
 
-afterEach(cleanup)
 configure({ adapter: new Adapter() })
+
+afterEach(cleanup)
+
 const setup = (data: Country[]) => {
   const { getByTestId, getByLabelText, getAllByRole } = render(
     <SearchSection countries={data} />,
@@ -33,59 +35,67 @@ const setup = (data: Country[]) => {
 const data = testData as Country[]
 
 describe('<SearchSection />', () => {
-  test('Always renders a search bar with type="text"', () => {
+  test('Renders a search bar with type="text"', () => {
     const { searchBar } = setup([])
     expect(searchBar).toHaveAttribute('type', 'text')
   }),
-    test('Search term value updates on change', () => {
+    test('Search term value should be updated on change', () => {
       const { searchBar } = setup([])
       fireEvent.change(searchBar, { target: { value: 'test' } })
       expect(searchBar.value).toBe('test')
     }),
-    test('Show clear search button input is not empty', () => {
+    test('Shows clear search button input is not empty', () => {
       const { searchBar, getByTestId } = setup([])
       fireEvent.change(searchBar, { target: { value: 'test' } })
       const button = getByTestId('clear-search-btn')
       expect(button).toBeInTheDocument()
     }),
-    test('Hide clear search button when input is empty', () => {
+    test('Hides clear search button when input is empty', () => {
       const { getByTestId } = setup([])
       expect(() => getByTestId('clear-search-btn')).toThrow()
     }),
-    test('Show results section when focus', () => {
+    test('Shows results section when focus', () => {
       const { searchSection, getByTestId } = setup([])
       fireEvent.focusIn(searchSection)
       const resultsSection = getByTestId('results-section')
       expect(resultsSection).toBeInTheDocument()
     }),
-    test('Hide results section when loses focus', () => {
+    test('Hides results section when loses focus', () => {
       const { searchSection, getByTestId } = setup([])
       fireEvent.focusIn(searchSection)
       fireEvent.focusOut(searchSection)
       expect(() => getByTestId('results-section')).toThrow()
     }),
-    test('Filter countries correctly: have results', () => {
+    test('Filters countries correctly: have results', () => {
       const { searchSection, searchBar, getAllByRole } = setup(data)
       fireEvent.focusIn(searchSection)
       fireEvent.change(searchBar, { target: { value: 'vi' } })
-      const listItems = getAllByRole('listitem')
+      const listItems = getAllByRole('results-listitem')
       expect(listItems).toHaveLength(8)
     }),
-    test('Filter countries correctly: have 1 result', () => {
+    test('Filters countries correctly: have 1 result', () => {
       const { searchSection, searchBar, getAllByRole } = setup(data)
       fireEvent.focusIn(searchSection)
       fireEvent.change(searchBar, { target: { value: 'vie' } })
-      const listItems = getAllByRole('listitem')
+      const listItems = getAllByRole('results-listitem')
       expect(listItems).toHaveLength(1)
     }),
-    test('Filter countries correctly: no results', () => {
+    test('Filters countries correctly: no results', () => {
       const { searchSection, searchBar, getByTestId } = setup(data)
       fireEvent.focusIn(searchSection)
       fireEvent.change(searchBar, { target: { value: 'vie23f' } })
       const resultsList = () => getByTestId('results-list')
       expect(resultsList).toThrow()
     }),
-    test('Press "Enter" to select a country and navigate to detail page', () => {
+    test('First result should be selected by default', () => {
+      const { searchSection, getByTestId } = setup(data)
+      fireEvent.focusIn(searchSection)
+      const selectedListItemClasses =
+        getByTestId(`results-listitem-0`).getAttribute('class')
+      const splitClasses = selectedListItemClasses?.split(' ')
+      expect(splitClasses?.includes('Mui-selected')).toBe(true)
+    }),
+    test('Navigates to selected country detail page when press Enter', () => {
       const searchSection = mount(<SearchSection countries={data} />)
 
       const push = jest.fn()
@@ -102,7 +112,7 @@ describe('<SearchSection />', () => {
 
       expect(push).toHaveBeenCalledWith(expectedRoute)
     }),
-    test('Change selected country by keyboard: Up and Down Arrow', () => {
+    test('Changes selected country by keyboard: Up and Down Arrow', () => {
       const searchSection = mount(<SearchSection countries={data} />)
 
       const push = jest.fn()
@@ -123,7 +133,7 @@ describe('<SearchSection />', () => {
 
       expect(push).toHaveBeenCalledWith(expectedRoute)
     }),
-    test('Change selected result to bottom result when ArrowUp in top result', () => {
+    test('Changes selected result to last result when ArrowUp in first result', () => {
       const searchSection = mount(<SearchSection countries={data} />)
 
       const push = jest.fn()
@@ -143,7 +153,7 @@ describe('<SearchSection />', () => {
 
       expect(push).toHaveBeenCalledWith(expectedRoute)
     }),
-    test('Change selected result to top result when ArrowDown in bottom result', () => {
+    test('Changes selected result to first result when ArrowDown in last result', () => {
       const searchSection = mount(<SearchSection countries={data} />)
 
       const push = jest.fn()
