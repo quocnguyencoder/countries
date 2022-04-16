@@ -2,11 +2,14 @@ import { CacheProvider, EmotionCache } from '@emotion/react'
 import { Box } from '@mui/material'
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
+import { DefaultSeo } from 'next-seo'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
 import * as React from 'react'
+import nextConfig from 'data/next-seo.config'
 import createEmotionCache from '../src/createEmotionCache'
 import theme from '../src/theme'
+
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache()
@@ -23,6 +26,23 @@ export default function MyApp(props: MyAppProps) {
       </Head>
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+        <DefaultSeo
+          {...nextConfig}
+          additionalMetaTags={[
+            {
+              property: 'twitter:image',
+              content: `${
+                process.env.NODE_ENV !== 'development'
+                  ? process.env.NEXT_PUBLIC_COUNTRIES_URL
+                  : ''
+              }/twitter-cover.png`,
+            },
+            {
+              property: 'og:type',
+              content: 'website',
+            },
+          ]}
+        />
         <CssBaseline />
         <Box
           height="100vh"

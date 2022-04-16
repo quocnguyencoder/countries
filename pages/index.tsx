@@ -1,6 +1,7 @@
 import Container from '@mui/material/Container'
 import Logo from '@/components/Logo'
 import SearchSection from '@/components/SearchSection'
+import SEO from '@/components/SEO'
 import Country from 'interfaces/country'
 import Copyright from '../src/Copyright'
 
@@ -19,6 +20,7 @@ const Home = ({ countries }: Props) => {
         height: '100vh',
       }}
     >
+      <SEO />
       <Logo />
       <SearchSection countries={countries} />
       <Copyright />
