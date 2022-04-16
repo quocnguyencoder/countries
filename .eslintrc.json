@@ -8,6 +8,8 @@
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
+    "plugin:import/recommended",
+    "plugin:import/typescript",
     "prettier"
   ],
   "env": {
@@ -34,7 +36,7 @@
     "@typescript-eslint/no-use-before-define": 0,
     "@typescript-eslint/explicit-module-boundary-types": 0,
     "@typescript-eslint/no-unused-vars": [
-      2,
+      1,
       {
         "argsIgnorePattern": "^_"
       }
@@ -49,7 +51,7 @@
       }
     ],
     "sort-imports": [
-      "error",
+      1,
       {
         "ignoreCase": true,
         "ignoreDeclarationSort": true

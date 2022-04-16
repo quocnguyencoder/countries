@@ -18,6 +18,12 @@
     "paths": {
       "@/components/*": [
         "components/*"
+      ],
+      "@/interfaces/*": [
+        "interfaces/*"
+      ],
+      "@/helpers/*": [
+        "helpers/*"
       ]
     }
   },

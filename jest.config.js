@@ -18,6 +18,14 @@ module.exports = {
     https://jestjs.io/docs/webpack#handling-static-assets */
     '^.+\\.(jpg|jpeg|png|gif|webp|avif|svg)$':
       '<rootDir>/__mocks__/fileMock.js',
+    
+      // Handle module aliases 
+    '^@/components/(.*)$': '<rootDir>/components/$1',
+    '^@/pages/(.*)$': '<rootDir>/pages/$1',
+    '^@/interfaces/(.*)$': '<rootDir>/interfaces/$1',
+    '^@/helpers/(.*)$': '<rootDir>/helpers/$1',
+    '^@/test-data/(.*)$': '<rootDir>/test-data/$1',
+
   },
   testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/.next/',"<rootDir>/e2e/",],
   testEnvironment: 'jsdom',
