@@ -12,6 +12,7 @@ const setup = (data: Country[]) => {
     <Results
       filteredCountries={data}
       selectedCountry={selectedCountry}
+      searchTerm={''}
       goToDetail={goToDetail}
     />,
   )

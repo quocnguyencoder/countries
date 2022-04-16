@@ -108,6 +108,7 @@ const SearchSection = ({ countries }: Props) => {
           <Results
             filteredCountries={filteredCountries}
             selectedCountry={selectedCountry}
+            searchTerm={searchTerm}
             goToDetail={goToDetail}
           />
         )}

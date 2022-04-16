@@ -10,16 +10,22 @@ import {
 } from '@mui/material'
 import React from 'react'
 import Country from 'interfaces/country'
-
+import parse from 'autosuggest-highlight/parse'
+import match from 'autosuggest-highlight/match'
 interface Props {
   filteredCountries: Country[]
   selectedCountry: number
+  searchTerm: string
   goToDetail: (index: number) => void
 }
 
-const Results = ({ filteredCountries, selectedCountry, goToDetail }: Props) => {
+const Results = ({
+  filteredCountries,
+  selectedCountry,
+  searchTerm,
+  goToDetail,
+}: Props) => {
   const haveNoResults = filteredCountries.length === 0
-  // highlight matches
 
   return (
     <Box data-testid="results-section">
@@ -28,25 +34,48 @@ const Results = ({ filteredCountries, selectedCountry, goToDetail }: Props) => {
           data-testid="results-list"
           sx={{ overflow: 'auto', maxHeight: '40vh' }}
         >
-          {filteredCountries.map((country, index) => (
-            <ListItem
-              button
-              role="results-listitem"
-              data-testid={`results-listitem-${index}`}
-              selected={index === selectedCountry}
-              onMouseDown={() => goToDetail(index)}
-              id={`country-${index}`}
-              key={`${index}${country.name.common}`}
-            >
-              <ListItemAvatar>
-                <Avatar src={country.flags.svg} />
-              </ListItemAvatar>
-              <ListItemText
-                sx={{ fontSize: 'large' }}
-                primary={country.name.common}
-              />
-            </ListItem>
-          ))}
+          {filteredCountries.map((country, index) => {
+            const matches = match(country.name.common, searchTerm, {
+              insideWords: true,
+              findAllOccurrences: true,
+            })
+            const parts = parse(country.name.common, matches)
+            return (
+              <ListItem
+                button
+                role="results-listitem"
+                data-testid={`results-listitem-${index}`}
+                selected={index === selectedCountry}
+                onMouseDown={() => goToDetail(index)}
+                id={`country-${index}`}
+                key={`${index}${country.name.common}`}
+              >
+                <ListItemAvatar>
+                  <Avatar src={country.flags.svg} />
+                </ListItemAvatar>
+                <ListItemText
+                  sx={{ fontSize: 'large' }}
+                  primary={
+                    <>
+                      {parts.map((part, index) => (
+                        <span
+                          key={index}
+                          style={{
+                            fontWeight: part.highlight ? 700 : 400,
+                            backgroundColor: part.highlight
+                              ? 'yellow'
+                              : 'transparent',
+                          }}
+                        >
+                          {part.text}
+                        </span>
+                      ))}
+                    </>
+                  }
+                />
+              </ListItem>
+            )
+          })}
         </List>
       ) : (
         <Box
