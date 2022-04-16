@@ -1,7 +1,6 @@
 import { Box, Paper } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import scrollIntoViewIfNeeded from 'scroll-into-view-if-needed'
 import Results from '@/components/Results'
 import toSpinalCase from '@/helpers/toSpinalCase'
 import Country from '@/interfaces/country'
@@ -18,6 +17,19 @@ const SearchSection = ({ countries }: Props) => {
   const [selectedCountry, setSelectedCountry] = useState(0)
   const [filteredCountries, setFilteredCountries] =
     useState<Country[]>(countries)
+
+  // filter countries when search term changes
+  useEffect(() => {
+    const searchResults = countries.filter((country) =>
+      country.name.common
+        .toLocaleLowerCase()
+        .includes(searchTerm.toLocaleLowerCase()),
+    )
+    setFilteredCountries(searchResults)
+  }, [searchTerm, countries])
+
+  // reset selected country to first result when results changes
+  useEffect(() => setSelectedCountry(0), [filteredCountries])
 
   const goToDetail = (countryIndex: number) => {
     const countryName = toSpinalCase(
@@ -59,32 +71,6 @@ const SearchSection = ({ countries }: Props) => {
       hasResults &&
       (isSelect ? goToDetail(selectedCountry) : changeSelectedCountry())
   }
-
-  // filter countries when search term changes
-  useEffect(() => {
-    const searchResults = countries.filter((country) =>
-      country.name.common
-        .toLocaleLowerCase()
-        .includes(searchTerm.toLocaleLowerCase()),
-    )
-    setFilteredCountries(searchResults)
-  }, [searchTerm, countries])
-
-  // reset selected country to first result when results changes
-  useEffect(() => setSelectedCountry(0), [filteredCountries])
-
-  // scroll to selected result if needed
-  useEffect(() => {
-    const element = document.getElementById(
-      `country-${selectedCountry}`,
-    ) as Element
-
-    element &&
-      scrollIntoViewIfNeeded(element, {
-        behavior: 'smooth',
-        scrollMode: 'if-needed',
-      })
-  }, [selectedCountry])
 
   return (
     <Box flex={1} width="95%">
